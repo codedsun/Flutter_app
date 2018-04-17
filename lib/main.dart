@@ -28,6 +28,7 @@ class RandomWordsState extends State<RandomWords>{
 
   final _suggestions = <WordPair>[];
   final _biggerfont = const TextStyle(fontSize: 18.0);
+  final _save = new Set<WordPair>();
 
   /*function to give the word pairs*/
 
@@ -48,9 +49,23 @@ class RandomWordsState extends State<RandomWords>{
   }
 
   Widget _buildRow(WordPair wordPair){
+    final _alreadySaved = _save.contains(wordPair);
     return new ListTile(
       title: new Text(wordPair.asPascalCase, style: _biggerfont),
-    );
+      trailing: new Icon(_alreadySaved? Icons.favorite : Icons.favorite_border,
+      color: _alreadySaved ? Colors.red : null),
+
+      onTap: (){
+        setState((){
+          if(_alreadySaved){
+            _save.remove(wordPair);
+          }
+          else
+            {
+              _save.add(wordPair);
+            }
+        });
+      });
   }
 
   @override
